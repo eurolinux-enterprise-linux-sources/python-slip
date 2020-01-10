@@ -3,7 +3,7 @@
 %{!?python_version: %global python_version %(%{__python} -c "from distutils.sysconfig import get_python_version; print get_python_version()")}
 
 Name:       python-slip
-Version:    0.2.11
+Version:    0.2.20
 Release:    1%{?dist}
 Summary:    Miscellaneous convenience, extension and workaround code for Python
 
@@ -94,6 +94,38 @@ rm -rf %buildroot
 %{python_sitelib}/slip.gtk-%{version}-py%{python_version}.egg-info
 
 %changelog
+* Fri Nov 28 2011 Nils Philippsen <nils@redhat.com> - 0.2.20-1
+- revert "preserve signature, docstrings, etc. of decorated methods" (#757517)
+
+* Thu Nov 03 2011 Nils Philippsen <nils@redhat.com> - 0.2.19-1
+- allow service object methods to be called locally
+- preserve signature, docstrings, etc. of decorated methods
+
+* Wed Oct 19 2011 Nils Philippsen <nils@redhat.com> - 0.2.18-1
+- actually use persistent value in Object constructor
+
+* Mon Jun 27 2011 Nils Philippsen <nils@redhat.com> - 0.2.17-1
+- fix default timeouts of None in bus objects (#716620)
+- reduce proxy method calling overhead a bit more
+
+* Tue Jun 21 2011 Nils Philippsen <nils@redhat.com> - 0.2.16-1
+- actually distribute slip.dbus.constants module (#714980)
+
+* Mon Jun 20 2011 Nils Philippsen <nils@redhat.com> - 0.2.15-1
+- reduce proxy method call overhead
+- fix magic value for infinite timeouts (#708761)
+
+* Mon Oct 11 2010 Nils Philippsen <nils@redhat.com> - 0.2.14-1
+- use plain "raise" in some places to ease debugging
+
+* Tue Aug 31 2010 Nils Philippsen <nils@redhat.com> - 0.2.13-1
+- revert "use tempfile.mkstemp"
+
+* Tue Aug 24 2010 Nils Philippsen <nils@redhat.com> - 0.2.12-1
+- use os.path.abspath instead of .realpath (#615819)
+- use tempfile.mkstemp
+- don't use hardcoded file ext separator
+
 * Wed Jun 30 2010 Nils Philippsen <nils@redhat.com> - 0.2.11-1
 - fix re-raising exceptions
 - add slip.util.files.overwrite_safely()

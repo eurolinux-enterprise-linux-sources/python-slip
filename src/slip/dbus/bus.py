@@ -2,7 +2,7 @@
 
 # slip.dbus.bus -- augmented dbus buses
 #
-# Copyright © 2009 Red Hat, Inc.
+# Copyright © 2009, 2011 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,12 +26,14 @@ buses."""
 
 import dbus
 import proxies
+import constants
 
 for name in ("Bus", "SystemBus", "SessionBus", "StarterBus"):
     exec \
 """def %(name)s(*args, **kwargs):
     busobj = dbus.%(name)s(*args, **kwargs)
     busobj.ProxyObjectClass = proxies.ProxyObject
-    busobj.default_timeout = -1.0
+    busobj.default_timeout = %(default_timeout)s
     return busobj
-""" % {"name": name, "modname": __name__}
+""" % {"name": name, "modname": __name__,
+       "default_timeout": constants.method_call_no_timeout}

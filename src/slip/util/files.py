@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Copyright © 2009 Red Hat, Inc.
+# Copyright © 2009, 2010 Red Hat, Inc.
 # Authors:
 # Nils Philippsen <nils@redhat.com>
 #
@@ -33,8 +33,6 @@ BLOCKSIZE = 1024
 
 
 def _issamefile(path1, path2):
-    issame = False
-
     s1 = os.stat(path1)
     s2 = os.stat(path2)
 
@@ -61,7 +59,7 @@ def linkfile(srcpath, dstpath):
     if issamefile(srcpath, dstpath, catch_stat_exceptions=OSError):
         return
 
-    dstpath = os.path.realpath(dstpath)
+    dstpath = os.path.abspath(dstpath)
     dstdname = os.path.dirname(dstpath)
     dstbname = os.path.basename(dstpath)
 
@@ -81,7 +79,7 @@ def linkfile(srcpath, dstpath):
 
                 pass
             else:
-                raise e
+                raise
 
     if hardlinked:
         os.rename(_tmpfilename, dstpath)
@@ -96,12 +94,12 @@ def copyfile(srcpath, dstpath, copy_mode_from_dst=True, run_restorecon=True):
     if issamefile(srcpath, dstpath, catch_stat_exceptions=OSError):
         return
 
-    dstpath = os.path.realpath(dstpath)
+    dstpath = os.path.abspath(dstpath)
     dstdname = os.path.dirname(dstpath)
     dstbname = os.path.basename(dstpath)
 
     srcfile = open(srcpath, "rb")
-    dsttmpfile = tempfile.NamedTemporaryFile(prefix=dstbname + ".",
+    dsttmpfile = tempfile.NamedTemporaryFile(prefix=dstbname + os.path.extsep,
             dir=dstdname, delete=False)
 
     mode_copied = False
@@ -178,7 +176,7 @@ def overwrite_safely(path, content, preserve_mode=True, preserve_context=True):
 
     exists = os.path.exists(path)
 
-    if preserve_context and selinux.is_selinux_enabled() < 0:
+    if preserve_context and selinux.is_selinux_enabled() <= 0:
         preserve_context = False
 
     try:
