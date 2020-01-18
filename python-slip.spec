@@ -4,7 +4,7 @@
 
 Name:       python-slip
 Version:    0.4.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Miscellaneous convenience, extension and workaround code for Python
 
 Group:      System Environment/Libraries
@@ -95,6 +95,9 @@ rm -rf %buildroot
 %{python_sitelib}/slip.gtk-%{version}-py%{python_version}.egg-info
 
 %changelog
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 0.4.0-2
+- Mass rebuild 2013-12-27
+
 * Fri Mar 08 2013 Nils Philippsen <nils@redhat.com> - 0.4.0-1
 - version 0.4.0:
   - get rid of (ancient) PolicyKit-0.x support
