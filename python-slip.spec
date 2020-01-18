@@ -4,15 +4,21 @@
 
 Name:       python-slip
 Version:    0.4.0
-Release:    2%{?dist}
+Release:    4%{?dist}
 Summary:    Miscellaneous convenience, extension and workaround code for Python
 
 Group:      System Environment/Libraries
 License:    GPLv2+
-URL:        http://fedorahosted.org/python-slip
-Source0:    http://fedorahosted.org/released/%{name}/%{name}-%{version}.tar.bz2
+URL:        https://github.com/nphilipp/python-slip
+Source0:    https://github.com/nphilipp/%{name}/releases/download/%{name}-%{version}/%{name}-%{version}.tar.bz2
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:  noarch
+
+# Make firewalld to not log errors when running commands as root,
+# when polkitd is not present
+# Fixed upstream: https://github.com/nphilipp/python-slip/commit/39787d6773f628119876dd88bb0106e77a65201e
+# Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=1393488
+Patch0: fix-firwalld-logging.patch
 
 BuildRequires:  python
 BuildRequires:  python-devel
@@ -63,6 +69,7 @@ lets gtk labels be automatically re-wrapped upon resizing.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 make %{?_smp_mflags}
@@ -95,6 +102,15 @@ rm -rf %buildroot
 %{python_sitelib}/slip.gtk-%{version}-py%{python_version}.egg-info
 
 %changelog
+* Mon Oct 16 2017 Charalampos Stratakis <cstratak@redhat.com> - 0.4.0-4
+- Fix upstream and source URL's
+Resolves: rhbz#1502397
+
+* Wed Sep 13 2017 Charalampos Stratakis <cstratak@redhat.com> - 0.4.0-3
+- Make firewalld to not log errors when running commands as root
+in the absence of polkitd.
+Resolves: rhbz#1393488
+
 * Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 0.4.0-2
 - Mass rebuild 2013-12-27
 
